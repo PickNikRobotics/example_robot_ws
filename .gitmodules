@@ -4,3 +4,9 @@
 [submodule "src/external_dependencies/example_arm_driver"]
 	path = src/external_dependencies/example_arm_driver
 	url = git@github.com:PickNikRobotics/example_arm_driver.git
+[submodule "src/external_dependencies/ros2_robotiq_description"]
+	path = src/external_dependencies/ros2_robotiq_description
+	url = git@github.com:PickNikRobotics/ros2_robotiq_gripper.git
+[submodule "src/external_dependencies/serial"]
+	path = src/external_dependencies/serial
+	url = git@github.com:tylerjw/serial.git
