@@ -1,0 +1,6 @@
+[submodule "src/external_dependencies/example_arm_description"]
+	path = src/external_dependencies/example_arm_description
+	url = git@github.com:PickNikRobotics/example_arm_description.git
+[submodule "src/external_dependencies/example_arm_driver"]
+	path = src/external_dependencies/example_arm_driver
+	url = git@github.com:PickNikRobotics/example_arm_driver.git
