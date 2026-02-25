@@ -82,6 +82,41 @@ ros2_control:
   # [Optional, default=[]]
   controller_shared_topics: []
 
+# Configuration files for MoveIt.
+# For more information, refer to https://moveit.picknik.ai/main/doc/how_to_guides/moveit_configuration/moveit_configuration_tutorial.html
+# [Required]
+moveit_params:
+  # Primary joint group name used by the Waypoint Manager and motion planning.
+  joint_group_name: "manipulator"
+  # PoseIK configuration file.
+  kinematics:
+    package: "example_robot_mock"
+    path: "config/moveit/pose_ik.yaml"
+  # URDF limit overrides and additional limits.
+  joint_limits:
+    package: "example_robot_mock"
+    path: "config/moveit/joint_limits.yaml"
+  # Pose Jog configuration file.
+  pose_jog:
+    package: "example_robot_mock"
+    path: "config/moveit/pose_jog.yaml"
+  # Joint Jog configuration file.
+  joint_jog:
+    package: "example_robot_mock"
+    path: "config/moveit/joint_jog.yaml"
+  # Planning Scene Monitor settings.
+  publish:
+    planning_scene: True
+    geometry_updates: True
+    state_updates: True
+    transforms_updates: True
+  # Trajectory Execution Manager settings.
+  trajectory_execution:
+    manage_controllers: True
+    allowed_execution_duration_scaling: 2.0
+    allowed_goal_duration_margin: 5.0
+    allowed_start_tolerance: 0.01
+
 objectives:
   objective_library_paths:
     example_objective:
