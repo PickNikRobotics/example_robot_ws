@@ -1,6 +1,26 @@
 based_on_package: example_robot_sim
-objectives:
-  objective_library_paths:
-    example_objective:
-      package_name: "example_robot_hw"
-      relative_path: "objectives"
+
+hardware:
+  # Set simulated to false if you are using this as a configuration for real hardware.
+  # This allows users to switch between mock and real hardware by changing a single parameter with config inheritance.
+  # [Required]
+  simulated: false
+
+  # If simulated is false, launch the following file with the MoveIt Pro Drivers:
+  # [Optional, defaults to a blank launch file if not specified]
+  robot_driver_persist_launch_file:
+    package: "moveit_studio_agent"
+    path: "launch/blank.launch.py"
+
+  # Parameters used to configure the robot description through XACRO.
+  # A URDF and SRDF are both required.
+  # [Required]
+  robot_description:
+    # Specify any additional parameters required for the URDF.
+    # Many of these are specific to the descriptions packages, and can be customized as needed.
+    # [Optional]
+    urdf_params:
+        # Use "mock", "mujoco", or "physical"
+      - hardware_interface: "physical"
+      - robot_ip: "192.10.0.11"
+      - tool_device_name: "/dev/ttyUSB0"
