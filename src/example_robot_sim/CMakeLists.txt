@@ -4,6 +4,6 @@ project(example_robot_sim)
 find_package(ament_cmake REQUIRED)
 
 # Install configuration files
-install(DIRECTORY config launch objectives DESTINATION share/${PROJECT_NAME}/)
+install(DIRECTORY config mjcf launch urdf DESTINATION share/${PROJECT_NAME}/)
 
 ament_package()

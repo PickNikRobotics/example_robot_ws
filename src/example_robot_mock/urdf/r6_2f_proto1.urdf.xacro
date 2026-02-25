@@ -1,7 +1,10 @@
 <?xml version="1.0" ?>
 <robot name="r6_2f_proto1" xmlns:xacro="http://wiki.ros.org/xacro">
 
+  <!-- mock, mujoco, or physical -->
   <xacro:arg name="hardware_interface" default="mock"/>
+  <xacro:arg name="mujoco_model" default="mjcf/assets/arm_with_gripper_description.xml" />
+  <xacro:arg name="mujoco_viewer" default="false" />
 
   <!-- R6bot Arm -->
   <xacro:include filename="$(find example_arm_description)/urdf/r6bot_urdf_macro.xacro"/>
@@ -34,8 +37,29 @@
   <!-- Teleop grasp_link -->
   <link name="grasp_link"/>
   <joint name="grasp_link_joint" type="fixed">
-    <parent link="tool0"/>
+    <parent link="robotiq_85_base_link"/>
     <child link="grasp_link"/>
   </joint>
+
+  <!-- MuJoCo hardware -->
+  <xacro:if value="${'$(arg hardware_interface)' == 'mujoco'}">
+    <xacro:include filename="$(find example_robot_sim)/urdf/r6bot_mujoco_ros2_control_macro.xacro"/>
+    <xacro:r6bot_control
+      mujoco_model="$(arg mujoco_model)"
+      mujoco_viewer="$(arg mujoco_viewer)"
+    />
+  </xacro:if>
+
+  <!-- Physical hardware -->
+  <xacro:if value="${'$(arg hardware_interface)' == 'physical'}">
+    <xacro:include filename="$(find example_arm_driver)/urdf/r6bot_physical_ros2_control_macro.xacro" />
+    <xacro:r6bot_control
+      mujoco_model="$(arg mujoco_model)"
+      mujoco_viewer="$(arg mujoco_viewer)"
+    />
+  <!-- Physical gripper hardware -->
+    <xacro:include filename="$(find robotiq_description)/urdf/2f_85.ros2_control.xacro"/>
+    <xacro:robotiq_gripper_ros2_control name="r6_2f_proto1" prefix="" use_fake_hardware="false"/>
+  </xacro:if>
 
 </robot>

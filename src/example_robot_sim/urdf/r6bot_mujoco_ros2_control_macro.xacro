@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro
+    name="r6bot_control"
+    params="mujoco_model mujoco_viewer"
+  >
+    <xacro:arg name="mujoco_model" default="mjcf/assets/arm_with_gripper_description.xml" />
+    <xacro:arg name="mujoco_viewer" default="false" />
+
+    <ros2_control name="r6_2f_proto1_mujoco" type="system">
+      <hardware>
+        <plugin>picknik_mujoco_ros/MujocoSystem</plugin>
+        <!-- Which MuJoCo MJCF to launch, to easily switch between different types of worlds -->
+        <param name="mujoco_model_package">example_robot_sim</param>
+        <param name="mujoco_model">$(arg mujoco_model)</param>
+        <!-- Whether to launch the MuJoCo interactive viewer -->
+        <param name="mujoco_viewer">$(arg mujoco_viewer)</param>
+        <!-- The rate <camera> data is published at -->
+        <param name="render_publish_rate">10</param>
+        <!-- The rate transforms to <site> poses are published at -->
+        <param name="tf_publish_rate">60</param>
+        <!-- The rate <rangefinder> data is published at -->
+        <param name="lidar_publish_rate">10</param>
+        <param name="ignore_joint_validation">robotiq_85_left_finger_tip_joint robotiq_85_left_inner_knuckle_joint robotiq_85_right_finger_tip_joint robotiq_85_right_inner_knuckle_joint robotiq_85_right_knuckle_joint</param>
+      </hardware>
+    </ros2_control>
+  </xacro:macro>
+</robot>
