@@ -48,6 +48,13 @@ hardware:
     package: "moveit_studio_agent"
     path: "launch/blank.launch.py"
 
+# Sets ROS global params for launch.
+# [Optional]
+ros_global_params:
+  # Whether or not to use simulated time.
+  # [Optional, default=False]
+  use_sim_time: False
+
 objectives:
   objective_library_paths:
     example_objective:
