@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<package format="3">
+  <name>example_robot_hw</name>
+  <version>0.0.1</version>
+  <description>My robot configuration package</description>
+
+  <maintainer email="support@picknik.ai">
+    MoveIt Pro User
+  </maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>example_robot_sim</depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
