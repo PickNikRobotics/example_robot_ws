@@ -1,1 +1,1 @@
-# MoveIt Pro Fanuc Config
+# MoveIt Pro Example Robot Workspace
