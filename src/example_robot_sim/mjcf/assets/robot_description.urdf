@@ -517,4 +517,3 @@
     <child link="grasp_link"/>
   </joint>
 </robot>
-

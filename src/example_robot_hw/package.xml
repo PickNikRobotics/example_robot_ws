@@ -4,10 +4,8 @@
   <version>0.0.1</version>
   <description>My robot configuration package</description>
 
-  <maintainer email="support@picknik.ai">
-    MoveIt Pro User
-  </maintainer>
-  <license>Apache-2.0</license>
+  <maintainer email="support@picknik.ai">MoveIt Pro User</maintainer>
+  <license>BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <depend>example_robot_sim</depend>

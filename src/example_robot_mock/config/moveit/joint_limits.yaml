@@ -1,6 +1,6 @@
-# joint_limits.yaml allows overriding per-joint URDF values used for motion planning and speicyfing additional dynamic limits.
-# - Positions limits can be overriden `has_position_limits`, `min_position` and `max_position`.
-# - Velocity limits can be overriden with `has_velocity_limits` and `max_velocity`.
+# joint_limits.yaml allows overriding per-joint URDF values used for motion planning and specifying additional dynamic limits.
+# - Positions limits can be overridden `has_position_limits`, `min_position` and `max_position`.
+# - Velocity limits can be overridden with `has_velocity_limits` and `max_velocity`.
 # - Acceleration limits can be set with `has_acceleration_limits` and `max_acceleration`.
 # - Jerk limits can be set with `has_jerk_limits` and `max_jerk`.
 joint_limits:

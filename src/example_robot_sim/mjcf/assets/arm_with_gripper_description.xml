@@ -1,28 +1,71 @@
-<?xml version="1.0" ?><mujoco model="r6_2f_proto1">
-  <compiler angle="radian"/>
+<?xml version="1.0" ?>
+<mujoco model="r6_2f_proto1">
+  <compiler angle="radian" />
 
   <option integrator="implicitfast">
-    <flag multiccd="enable"/>
+    <flag multiccd="enable" />
   </option>
 
   <asset>
-    <mesh name="link_0" file="link_0.stl"/>
-    <mesh name="link_1" file="link_1.stl"/>
-    <mesh name="link_2" file="link_2.stl"/>
-    <mesh name="link_3" file="link_3.stl"/>
-    <mesh name="link_4" file="link_4.stl"/>
-    <mesh name="link_5" file="link_5.stl"/>
-    <mesh name="link_6" file="link_6.stl"/>
-    <model name="robotiq_2f_85" file="2f85.xml"/>
+    <mesh name="link_0" file="link_0.stl" />
+    <mesh name="link_1" file="link_1.stl" />
+    <mesh name="link_2" file="link_2.stl" />
+    <mesh name="link_3" file="link_3.stl" />
+    <mesh name="link_4" file="link_4.stl" />
+    <mesh name="link_5" file="link_5.stl" />
+    <mesh name="link_6" file="link_6.stl" />
+    <model name="robotiq_2f_85" file="2f85.xml" />
   </asset>
 
   <actuator>
-    <position joint="joint_1" name="joint_1" ctrlrange="-3.14 3.14" kp="1000" forcelimited="false" dampratio="1"/>
-    <position joint="joint_2" name="joint_2" ctrlrange="-3.14 3.14" kp="1000" forcelimited="false" dampratio="1"/>
-    <position joint="joint_3" name="joint_3" ctrlrange="-3.14 3.14" kp="1000" forcelimited="false" dampratio="1"/>
-    <position joint="joint_4" name="joint_4" ctrlrange="-3.14 3.14" kp="1000" forcelimited="false" dampratio="1"/>
-    <position joint="joint_5" name="joint_5" ctrlrange="-3.14 3.14" kp="1000" forcelimited="false" dampratio="1"/>
-    <position joint="joint_6" name="joint_6" ctrlrange="-3.14 3.14" kp="1000" forcelimited="false" dampratio="1"/>
+    <position
+      joint="joint_1"
+      name="joint_1"
+      ctrlrange="-3.14 3.14"
+      kp="1000"
+      forcelimited="false"
+      dampratio="1"
+    />
+    <position
+      joint="joint_2"
+      name="joint_2"
+      ctrlrange="-3.14 3.14"
+      kp="1000"
+      forcelimited="false"
+      dampratio="1"
+    />
+    <position
+      joint="joint_3"
+      name="joint_3"
+      ctrlrange="-3.14 3.14"
+      kp="1000"
+      forcelimited="false"
+      dampratio="1"
+    />
+    <position
+      joint="joint_4"
+      name="joint_4"
+      ctrlrange="-3.14 3.14"
+      kp="1000"
+      forcelimited="false"
+      dampratio="1"
+    />
+    <position
+      joint="joint_5"
+      name="joint_5"
+      ctrlrange="-3.14 3.14"
+      kp="1000"
+      forcelimited="false"
+      dampratio="1"
+    />
+    <position
+      joint="joint_6"
+      name="joint_6"
+      ctrlrange="-3.14 3.14"
+      kp="1000"
+      forcelimited="false"
+      dampratio="1"
+    />
   </actuator>
 
   <asset>
@@ -66,41 +109,162 @@
 
   <worldbody>
     <body name="base_link" gravcomp="1">
-      <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="link_0" name="link_0"/>
-      <geom type="mesh" mesh="link_0" name="link_02"/>
+      <geom
+        type="mesh"
+        contype="0"
+        conaffinity="0"
+        group="1"
+        density="0"
+        mesh="link_0"
+        name="link_0"
+      />
+      <geom type="mesh" mesh="link_0" name="link_02" />
       <body name="link_1" pos="0 0 0.061584" gravcomp="1">
-        <joint name="joint_1" pos="0 0 0" axis="0 0 1" range="-3.14159 3.14159" actuatorfrcrange="-1000 1000"/>
-        <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="link_1" name="link_1"/>
-        <geom type="mesh" mesh="link_1" name="link_12"/>
-        <body name="link_2" pos="-0.101717 0 0.182284" quat="0.683013 -0.183013 -0.683013 0.183013" gravcomp="1">
-          <joint name="joint_2" pos="0 0 0" axis="0 0 1" range="-3.14159 3.14159" actuatorfrcrange="-1000 1000"/>
-          <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="link_2" name="link_2"/>
-          <geom type="mesh" mesh="link_2" name="link_22"/>
-          <body name="link_3" pos="0.685682 0 0.041861" quat="0 -0.707107 -0.707107 0" gravcomp="1">
-            <joint name="joint_3" pos="0 0 0" axis="0 0 1" range="-3.14159 3.14159" actuatorfrcrange="-1000 1000"/>
-            <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="link_3" name="link_3"/>
-            <geom type="mesh" mesh="link_3" name="link_32"/>
-            <body name="link_4" pos="0.518777 0 0.067458" quat="0 -0.965926 -0.258819 0" gravcomp="1">
-              <joint name="joint_4" pos="0 0 0" axis="0 0 1" range="-3.14159 3.14159" actuatorfrcrange="-1000 1000"/>
-              <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="link_4" name="link_4"/>
-              <geom type="mesh" mesh="link_4" name="link_42"/>
-              <body name="link_5" pos="0.112654 0 0.110903" quat="0.5 -0.5 0.5 -0.5" gravcomp="1">
-                <joint name="joint_5" pos="0 0 0" axis="0 0 1" range="-3.14159 3.14159" actuatorfrcrange="-1000 1000"/>
-                <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="link_5" name="link_5"/>
-                <geom type="mesh" mesh="link_5" name="link_52"/>
-                <body name="link_6" pos="-0.085976 0 0.133436" quat="0.707107 0 -0.707107 0" gravcomp="1">
-                  <joint name="joint_6" pos="0 0 0" axis="0 0 1" range="-3.14159 3.14159" actuatorfrcrange="-1000 1000"/>
-                  <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="link_6" name="link_6"/>
-                  <geom type="mesh" mesh="link_6" name="link_62"/>
+        <joint
+          name="joint_1"
+          pos="0 0 0"
+          axis="0 0 1"
+          range="-3.14159 3.14159"
+          actuatorfrcrange="-1000 1000"
+        />
+        <geom
+          type="mesh"
+          contype="0"
+          conaffinity="0"
+          group="1"
+          density="0"
+          mesh="link_1"
+          name="link_1"
+        />
+        <geom type="mesh" mesh="link_1" name="link_12" />
+        <body
+          name="link_2"
+          pos="-0.101717 0 0.182284"
+          quat="0.683013 -0.183013 -0.683013 0.183013"
+          gravcomp="1"
+        >
+          <joint
+            name="joint_2"
+            pos="0 0 0"
+            axis="0 0 1"
+            range="-3.14159 3.14159"
+            actuatorfrcrange="-1000 1000"
+          />
+          <geom
+            type="mesh"
+            contype="0"
+            conaffinity="0"
+            group="1"
+            density="0"
+            mesh="link_2"
+            name="link_2"
+          />
+          <geom type="mesh" mesh="link_2" name="link_22" />
+          <body
+            name="link_3"
+            pos="0.685682 0 0.041861"
+            quat="0 -0.707107 -0.707107 0"
+            gravcomp="1"
+          >
+            <joint
+              name="joint_3"
+              pos="0 0 0"
+              axis="0 0 1"
+              range="-3.14159 3.14159"
+              actuatorfrcrange="-1000 1000"
+            />
+            <geom
+              type="mesh"
+              contype="0"
+              conaffinity="0"
+              group="1"
+              density="0"
+              mesh="link_3"
+              name="link_3"
+            />
+            <geom type="mesh" mesh="link_3" name="link_32" />
+            <body
+              name="link_4"
+              pos="0.518777 0 0.067458"
+              quat="0 -0.965926 -0.258819 0"
+              gravcomp="1"
+            >
+              <joint
+                name="joint_4"
+                pos="0 0 0"
+                axis="0 0 1"
+                range="-3.14159 3.14159"
+                actuatorfrcrange="-1000 1000"
+              />
+              <geom
+                type="mesh"
+                contype="0"
+                conaffinity="0"
+                group="1"
+                density="0"
+                mesh="link_4"
+                name="link_4"
+              />
+              <geom type="mesh" mesh="link_4" name="link_42" />
+              <body
+                name="link_5"
+                pos="0.112654 0 0.110903"
+                quat="0.5 -0.5 0.5 -0.5"
+                gravcomp="1"
+              >
+                <joint
+                  name="joint_5"
+                  pos="0 0 0"
+                  axis="0 0 1"
+                  range="-3.14159 3.14159"
+                  actuatorfrcrange="-1000 1000"
+                />
+                <geom
+                  type="mesh"
+                  contype="0"
+                  conaffinity="0"
+                  group="1"
+                  density="0"
+                  mesh="link_5"
+                  name="link_5"
+                />
+                <geom type="mesh" mesh="link_5" name="link_52" />
+                <body
+                  name="link_6"
+                  pos="-0.085976 0 0.133436"
+                  quat="0.707107 0 -0.707107 0"
+                  gravcomp="1"
+                >
+                  <joint
+                    name="joint_6"
+                    pos="0 0 0"
+                    axis="0 0 1"
+                    range="-3.14159 3.14159"
+                    actuatorfrcrange="-1000 1000"
+                  />
+                  <geom
+                    type="mesh"
+                    contype="0"
+                    conaffinity="0"
+                    group="1"
+                    density="0"
+                    mesh="link_6"
+                    name="link_6"
+                  />
+                  <geom type="mesh" mesh="link_6" name="link_62" />
                   <body name="ft_frame" gravcomp="1">
                     <site
-                        name="tcp_fts_sensor"
-                        size="0.01"
-                        pos="0 0 0"
-                        quat="-1 1 0 0"
+                      name="tcp_fts_sensor"
+                      size="0.01"
+                      pos="0 0 0"
+                      quat="-1 1 0 0"
                     />
                     <body name="tool0" pos="0 0 0.185" gravcomp="1">
-                      <attach model="robotiq_2f_85" body="base_mount" prefix=""/>
+                      <attach
+                        model="robotiq_2f_85"
+                        body="base_mount"
+                        prefix=""
+                      />
                     </body>
                   </body>
                 </body>
