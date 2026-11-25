@@ -1,3 +1,9 @@
+# Launch file started by the MoveIt Pro Runtime.
+# [Required]
+runtime_launch_file:
+  package: "example_robot_mock"
+  path: "launch/runtime.launch.xml"
+
 hardware:
   # Parameters used to configure the robot description through XACRO.
   # A URDF and SRDF are both required.
@@ -24,29 +30,6 @@ hardware:
   # This should be false if you are launching the robot state publisher as part of drivers.
   # [Optional, default=True]
   launch_robot_state_publisher: True
-
-  # Set simulated to false if you are using this as a configuration for real hardware.
-  # This allows users to switch between mock and real hardware by changing a single parameter with config inheritance.
-  # [Required]
-  simulated: true
-
-  # If simulated is true, launch the following file with the MoveIt Pro Agent:
-  # [Optional, defaults to a blank launch file if not specified]
-  simulated_hardware_launch_file:
-    package: "moveit_studio_agent"
-    path: "launch/blank.launch.py"
-
-  # If simulated is true, launch the following file with the MoveIt Pro Drivers:
-  # [Optional, defaults to a blank launch file if not specified]
-  simulated_robot_driver_persist_launch_file:
-    package: "moveit_studio_agent"
-    path: "launch/blank.launch.py"
-
-  # If simulated is false, launch the following file with the MoveIt Pro Drivers:
-  # [Optional, defaults to a blank launch file if not specified]
-  robot_driver_persist_launch_file:
-    package: "moveit_studio_agent"
-    path: "launch/blank.launch.py"
 
 # Sets ROS global params for launch.
 # [Optional]
@@ -110,12 +93,6 @@ moveit_params:
     geometry_updates: True
     state_updates: True
     transforms_updates: True
-  # Trajectory Execution Manager settings.
-  trajectory_execution:
-    manage_controllers: True
-    allowed_execution_duration_scaling: 2.0
-    allowed_goal_duration_margin: 5.0
-    allowed_start_tolerance: 0.01
 
 # Configuration for loading behaviors and objectives.
 # [Required]

@@ -1,17 +1,12 @@
 based_on_package: example_robot_sim
 
+# Launch file started by the MoveIt Pro Runtime for the physical robot.
+# [Required]
+runtime_launch_file:
+  package: "example_robot_hw"
+  path: "launch/runtime.launch.xml"
+
 hardware:
-  # Set simulated to false if you are using this as a configuration for real hardware.
-  # This allows users to switch between mock and real hardware by changing a single parameter with config inheritance.
-  # [Required]
-  simulated: false
-
-  # If simulated is false, launch the following file with the MoveIt Pro Drivers:
-  # [Optional, defaults to a blank launch file if not specified]
-  robot_driver_persist_launch_file:
-    package: "moveit_studio_agent"
-    path: "launch/blank.launch.py"
-
   # Parameters used to configure the robot description through XACRO.
   # A URDF and SRDF are both required.
   # [Required]
