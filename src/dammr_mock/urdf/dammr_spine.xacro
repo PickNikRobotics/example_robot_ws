@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Vertical spine: a fixed column with one carriage on a prismatic joint. The carriage carries both arms and the head
+    camera, so they move up and down together. spine_carriage_link is at the rear edge of the carriage, on its top face.
+  -->
+  <xacro:property name="spine_travel" value="0.85"/>
+  <xacro:property name="column_depth" value="0.12"/>
+  <xacro:property name="column_height" value="1.10"/>
+  <xacro:property name="column_size" value="${column_depth} 0.20 ${column_height}"/>
+  <!-- Arm base mounts on the carriage top. -->
+  <xacro:property name="arm_mount_x" value="0.145"/>
+  <xacro:property name="arm_mount_y" value="0.275"/>
+  <xacro:property name="carriage_top" value="0.031"/>
+  <xacro:property name="crossbar_height" value="0.082"/>
+  <xacro:property name="crossbar_size" value="${2 * arm_mount_x} ${2 * (arm_mount_y + 0.14)} ${crossbar_height}"/>
+  <xacro:property name="head_mast_x" value="0.15"/>
+  <xacro:property name="head_mast_length" value="0.28"/>
+  <xacro:property name="head_mast_radius" value="0.02"/>
+  <!-- The head camera sits just in front of the arm bases. -->
+  <xacro:property name="head_camera_x" value="${arm_mount_x + 0.0291}"/>
+
+  <xacro:macro name="dammr_spine" params="parent *origin">
+    <joint name="spine_column_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="spine_column_link"/>
+      <xacro:insert_block name="origin"/>
+    </joint>
+    <link name="spine_column_link">
+      <visual>
+        <origin xyz="0 0 ${column_height / 2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${column_size}"/>
+        </geometry>
+        <material name="dammr_light_gray"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${column_height / 2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${column_size}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="spine_joint" type="prismatic">
+      <parent link="spine_column_link"/>
+      <child link="spine_carriage_link"/>
+      <origin xyz="${column_depth / 2} 0 0.15" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="0.0" upper="${spine_travel}" effort="3000.0" velocity="0.2"/>
+    </joint>
+    <link name="spine_carriage_link">
+      <!-- Crossbar under both arm bases. -->
+      <visual>
+        <origin xyz="${arm_mount_x} 0 ${carriage_top - crossbar_height / 2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${crossbar_size}"/>
+        </geometry>
+        <material name="dammr_dark_gray"/>
+      </visual>
+      <!-- Head mast. -->
+      <visual>
+        <origin xyz="${head_mast_x} 0 ${carriage_top + head_mast_length / 2}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${head_mast_radius}" length="${head_mast_length}"/>
+        </geometry>
+        <material name="dammr_light_gray"/>
+      </visual>
+      <collision>
+        <origin xyz="${arm_mount_x} 0 ${carriage_top - crossbar_height / 2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${crossbar_size}"/>
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="${head_mast_x} 0 ${carriage_top + head_mast_length / 2}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${head_mast_radius}" length="${head_mast_length}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Head camera above the arms, pitched 25 degrees down to look at the workspace in front of the robot. -->
+    <xacro:dammr_depth_camera name="head_camera" parent="spine_carriage_link" body_size="0.03 0.09 0.03">
+      <origin xyz="${head_camera_x} 0 0.3267" rpy="0 ${25 * pi / 180} 0"/>
+    </xacro:dammr_depth_camera>
+  </xacro:macro>
+
+</robot>

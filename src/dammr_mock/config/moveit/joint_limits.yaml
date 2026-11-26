@@ -1,0 +1,50 @@
+# Acceleration limits for motion planning. Velocity limits come from the URDF.
+joint_limits:
+  linear_x_joint:
+    has_acceleration_limits: true
+    max_acceleration: 0.5
+  linear_y_joint:
+    has_acceleration_limits: true
+    max_acceleration: 0.5
+  rotational_yaw_joint:
+    has_acceleration_limits: true
+    max_acceleration: 1.0
+  spine_joint:
+    has_acceleration_limits: true
+    max_acceleration: 0.5
+  left_joint_1:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  left_joint_2:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  left_joint_3:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  left_joint_4:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  left_joint_5:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  left_joint_6:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  right_joint_1:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  right_joint_2:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  right_joint_3:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  right_joint_4:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  right_joint_5:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  right_joint_6:
+    has_acceleration_limits: true
+    max_acceleration: 5.0

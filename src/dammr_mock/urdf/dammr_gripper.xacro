@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Generic parallel-jaw gripper with compliant fingertips. The gripper base frame matches the parent flange: z is the
+    approach direction and the fingers close along y. ${prefix}finger_joint drives both fingers; its value is the
+    travel of each finger toward the center, from 0 (open, 0.10 m between the contact faces) to 0.045 (closed).
+  -->
+  <xacro:property name="gripper_housing_top" value="0.072"/>
+  <xacro:property name="finger_open_offset" value="0.05"/>
+  <xacro:property name="finger_stroke" value="0.045"/>
+  <xacro:property name="finger_carriage_height" value="0.02"/>
+  <!-- The finger carriage matches the fin base: FIN_DEPTH and FIN_BASE_WIDTH in scripts/generate_compliant_finger_meshes.py. -->
+  <xacro:property name="finger_carriage_depth" value="0.025"/>
+  <xacro:property name="finger_carriage_width" value="0.03"/>
+
+  <xacro:macro name="dammr_gripper_finger" params="name">
+    <link name="${name}">
+      <visual>
+        <origin xyz="0 ${finger_carriage_width / 2} ${finger_carriage_height / 2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${finger_carriage_depth} ${finger_carriage_width} ${finger_carriage_height}"/>
+        </geometry>
+        <material name="dammr_dark_gray"/>
+      </visual>
+      <visual>
+        <origin xyz="0 0 ${finger_carriage_height}" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://dammr_mock/meshes/compliant_finger_visual.stl"/>
+        </geometry>
+        <material name="dammr_accent"/>
+      </visual>
+      <collision>
+        <origin xyz="0 ${finger_carriage_width / 2} ${finger_carriage_height / 2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${finger_carriage_depth} ${finger_carriage_width} ${finger_carriage_height}"/>
+        </geometry>
+      </collision>
+      <collision>
+        <origin xyz="0 0 ${finger_carriage_height}" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://dammr_mock/meshes/compliant_finger_collision.stl"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- yaw: rotation of the gripper about the flange z axis. -->
+  <xacro:macro name="dammr_gripper" params="prefix parent yaw">
+    <joint name="${prefix}gripper_mount_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}gripper_base_link"/>
+      <origin xyz="0 0 0" rpy="0 0 ${yaw}"/>
+    </joint>
+
+    <link name="${prefix}gripper_base_link">
+      <!-- Flange adapter. -->
+      <visual>
+        <origin xyz="0 0 0.006" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.045" length="0.012"/>
+        </geometry>
+        <material name="dammr_light_gray"/>
+      </visual>
+      <!-- Housing. -->
+      <visual>
+        <origin xyz="0 0 0.042" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.07 0.16 0.06"/>
+        </geometry>
+        <material name="dammr_dark_gray"/>
+      </visual>
+      <!-- Wrist camera bracket. -->
+      <visual>
+        <origin xyz="0.0425 0 0.035" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.015 0.03 0.03"/>
+        </geometry>
+        <material name="dammr_light_gray"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.036" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.09 0.16 0.072"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}finger_joint" type="prismatic">
+      <parent link="${prefix}gripper_base_link"/>
+      <child link="${prefix}finger_link"/>
+      <origin xyz="0 ${finger_open_offset} ${gripper_housing_top}" rpy="0 0 0"/>
+      <axis xyz="0 -1 0"/>
+      <limit lower="0.0" upper="${finger_stroke}" effort="100.0" velocity="0.1"/>
+    </joint>
+    <xacro:dammr_gripper_finger name="${prefix}finger_link"/>
+
+    <!-- The opposing finger is rotated half a turn about z, so the same axis closes it toward the center. -->
+    <joint name="${prefix}finger_mimic_joint" type="prismatic">
+      <parent link="${prefix}gripper_base_link"/>
+      <child link="${prefix}finger_mimic_link"/>
+      <origin xyz="0 ${-finger_open_offset} ${gripper_housing_top}" rpy="0 0 ${pi}"/>
+      <axis xyz="0 -1 0"/>
+      <limit lower="0.0" upper="${finger_stroke}" effort="100.0" velocity="0.1"/>
+      <mimic joint="${prefix}finger_joint" multiplier="1.0" offset="0.0"/>
+    </joint>
+    <xacro:dammr_gripper_finger name="${prefix}finger_mimic_link"/>
+
+    <!-- Tool center point, between the fingertip contact faces, 0.15 m from the flange. -->
+    <joint name="${prefix}grasp_link_joint" type="fixed">
+      <parent link="${prefix}gripper_base_link"/>
+      <child link="${prefix}grasp_link"/>
+      <origin xyz="0 0 0.15" rpy="0 0 0"/>
+    </joint>
+    <link name="${prefix}grasp_link"/>
+
+    <!-- Wrist camera on the bracket, tilted 20 degrees toward the fingertips. -->
+    <xacro:dammr_depth_camera name="${prefix}wrist_camera" parent="${prefix}gripper_base_link" body_size="0.025 0.042 0.042">
+      <origin xyz="0.07 0 0.04" rpy="0 ${-pi/2 - 20 * pi / 180} 0"/>
+    </xacro:dammr_depth_camera>
+  </xacro:macro>
+
+  <!-- Mock hardware for one gripper. The mimic finger follows ${prefix}finger_joint through the URDF mimic tag. -->
+  <xacro:macro name="dammr_gripper_mock_control" params="prefix">
+    <ros2_control name="${prefix}gripper" type="system">
+      <hardware>
+        <plugin>mock_components/GenericSystem</plugin>
+        <param name="calculate_dynamics">true</param>
+      </hardware>
+      <joint name="${prefix}finger_joint">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+
+</robot>

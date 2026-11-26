@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Planar base pose as three URDF joints from ${parent} to ${child}: x and y translation, then yaw. They have no
+    physical counterpart; planners and controllers move the base through them as ordinary joints.
+    height: height of the ${child} origin above the floor.
+  -->
+  <xacro:macro name="dammr_virtual_base_joints" params="parent child height">
+    <link name="virtual_rail_link_1"/>
+    <link name="virtual_rail_link_2"/>
+
+    <joint name="linear_x_joint" type="prismatic">
+      <parent link="${parent}"/>
+      <child link="virtual_rail_link_1"/>
+      <origin xyz="0 0 ${height}" rpy="0 0 0"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="-25.0" upper="25.0" effort="1000.0" velocity="0.5"/>
+    </joint>
+
+    <joint name="linear_y_joint" type="prismatic">
+      <parent link="virtual_rail_link_1"/>
+      <child link="virtual_rail_link_2"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-25.0" upper="25.0" effort="1000.0" velocity="0.5"/>
+    </joint>
+
+    <joint name="rotational_yaw_joint" type="continuous">
+      <parent link="virtual_rail_link_2"/>
+      <child link="${child}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="1000.0" velocity="0.5236"/>
+    </joint>
+  </xacro:macro>
+
+</robot>

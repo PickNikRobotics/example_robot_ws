@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Mock hardware for the base and spine. The virtual base joints and the spine take position commands. The wheels take
+    velocity commands, but no controller claims them, so they stay at rest while the base moves through its virtual joints.
+  -->
+  <xacro:macro name="dammr_position_joint" params="name initial_value">
+    <joint name="${name}">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">${initial_value}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="dammr_velocity_joint" params="name">
+    <joint name="${name}">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="dammr_platform_mock_control">
+    <ros2_control name="dammr_platform" type="system">
+      <hardware>
+        <plugin>mock_components/GenericSystem</plugin>
+        <param name="calculate_dynamics">true</param>
+      </hardware>
+      <xacro:dammr_position_joint name="linear_x_joint" initial_value="0.0"/>
+      <xacro:dammr_position_joint name="linear_y_joint" initial_value="0.0"/>
+      <xacro:dammr_position_joint name="rotational_yaw_joint" initial_value="0.0"/>
+      <xacro:dammr_position_joint name="spine_joint" initial_value="0.3"/>
+      <xacro:dammr_velocity_joint name="front_left_wheel_joint"/>
+      <xacro:dammr_velocity_joint name="rear_left_wheel_joint"/>
+      <xacro:dammr_velocity_joint name="rear_right_wheel_joint"/>
+      <xacro:dammr_velocity_joint name="front_right_wheel_joint"/>
+    </ros2_control>
+  </xacro:macro>
+
+</robot>

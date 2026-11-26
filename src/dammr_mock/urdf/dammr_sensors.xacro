@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Generic sensor bodies and frames. Each camera link has x forward, y left and z up; its optical frame follows
+    REP-103 (z forward, x right, y down). Mock mode publishes no sensor data, so these macros carry geometry and frames only.
+  -->
+
+  <!--
+    Stereo depth camera.
+    name:      frame prefix, producing ${name}_link and ${name}_optical_frame.
+    body_size: "x y z" box size of the camera body; its front face is at the camera link origin.
+  -->
+  <xacro:macro name="dammr_depth_camera" params="name parent body_size *origin">
+    <joint name="${name}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <xacro:insert_block name="origin"/>
+    </joint>
+    <xacro:property name="body_depth" value="${float(body_size.split()[0])}"/>
+    <link name="${name}_link">
+      <visual>
+        <origin xyz="${-body_depth / 2} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${body_size}"/>
+        </geometry>
+        <material name="dammr_black"/>
+      </visual>
+      <collision>
+        <origin xyz="${-body_depth / 2} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${body_size}"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${name}_optical_joint" type="fixed">
+      <parent link="${name}_link"/>
+      <child link="${name}_optical_frame"/>
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    </joint>
+    <link name="${name}_optical_frame"/>
+  </xacro:macro>
+
+  <!--
+    Planar 2D lidar. The link origin is the center of the scan plane, with x along the center of the scan.
+  -->
+  <xacro:macro name="dammr_2d_lidar" params="name parent *origin">
+    <joint name="${name}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <xacro:insert_block name="origin"/>
+    </joint>
+    <link name="${name}_link">
+      <visual>
+        <geometry>
+          <cylinder radius="0.035" length="0.06"/>
+        </geometry>
+        <material name="dammr_black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.035" length="0.06"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+</robot>

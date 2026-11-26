@@ -1,0 +1,114 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 500 # Hz
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    left_force_torque_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+    right_force_torque_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+    joint_trajectory_admittance_controller:
+      type: joint_trajectory_admittance_controller/JointTrajectoryAdmittanceController
+    left_velocity_force_controller:
+      type: velocity_force_controller/VelocityForceController
+    right_velocity_force_controller:
+      type: velocity_force_controller/VelocityForceController
+    joint_velocity_controller:
+      type: joint_velocity_controller/JointVelocityController
+    left_gripper_controller:
+      type: position_controllers/GripperActionController
+    right_gripper_controller:
+      type: position_controllers/GripperActionController
+
+left_force_torque_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: left_tcp_fts_sensor
+    frame_id: left_ft_frame
+
+right_force_torque_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: right_tcp_fts_sensor
+    frame_id: right_ft_frame
+
+# Executes trajectories for every planning group: it claims all of whole_body, and holds the joints a trajectory leaves out.
+# Do not run admittance through it: the admittance correction uses the whole_body Jacobian, so a force at one wrist
+# would move the base, the spine and with it the other arm. A sim or hardware config needs per-arm admittance controllers.
+joint_trajectory_admittance_controller:
+  ros__parameters:
+    planning_group_name: whole_body
+    ee_frames: [left_grasp_link, right_grasp_link]
+    sensor_frames: [left_ft_frame, right_ft_frame]
+    ft_sensor_names: [left_tcp_fts_sensor, right_tcp_fts_sensor]
+    # One per whole_body joint: linear_x_joint, linear_y_joint, rotational_yaw_joint, spine_joint, left_joint_1..6, right_joint_1..6.
+    stop_accelerations:
+      - 1.0
+      - 1.0
+      - 2.0
+      - 1.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+      - 30.0
+
+left_velocity_force_controller:
+  ros__parameters:
+    planning_group_name: left_arm
+    ee_frame: left_grasp_link
+    sensor_frame: left_ft_frame
+    ft_sensor_name: left_tcp_fts_sensor
+    max_joint_velocity: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    max_joint_acceleration: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+    max_cartesian_velocity: [0.25, 0.25, 0.25, 1.0, 1.0, 1.0]
+    max_cartesian_acceleration: [2.0, 2.0, 2.0, 4.0, 4.0, 4.0]
+    state_publish_rate: 10
+    jacobian_damping: 0.005
+    command_timeout: 0.2
+    joint_limit_position_tolerance: 0.02
+
+right_velocity_force_controller:
+  ros__parameters:
+    planning_group_name: right_arm
+    ee_frame: right_grasp_link
+    sensor_frame: right_ft_frame
+    ft_sensor_name: right_tcp_fts_sensor
+    max_joint_velocity: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    max_joint_acceleration: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+    max_cartesian_velocity: [0.25, 0.25, 0.25, 1.0, 1.0, 1.0]
+    max_cartesian_acceleration: [2.0, 2.0, 2.0, 4.0, 4.0, 4.0]
+    state_publish_rate: 10
+    jacobian_damping: 0.005
+    command_timeout: 0.2
+    joint_limit_position_tolerance: 0.02
+
+# Joint Jog for every joint of whole_body, in the same joint order as joint_trajectory_admittance_controller.
+joint_velocity_controller:
+  ros__parameters:
+    planning_group_name: whole_body
+    max_joint_velocity: [0.25, 0.25, 0.5, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    max_joint_acceleration: [0.5, 0.5, 1.0, 0.5, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+    command_interfaces: ["position"]
+    joint_limit_position_tolerance: 0.02
+    command_timeout: 0.2
+    state_publish_rate: 20
+
+left_gripper_controller:
+  ros__parameters:
+    joint: left_finger_joint
+    allow_stalling: true
+    stall_timeout: 0.05
+    goal_tolerance: 0.002
+
+right_gripper_controller:
+  ros__parameters:
+    joint: right_finger_joint
+    allow_stalling: true
+    stall_timeout: 0.05
+    goal_tolerance: 0.002
